@@ -1,26 +1,41 @@
 const express = require('express');
 const app = express();
+const bp = require('body-parser');
+const walletController = require('./controllers/WalletController');
+const TransactionController = require('./controllers/TransactionController');
 
-//importing example
-const test = require('./ehtereum-core/for_test');
-//importing example
 
-// Route handling
 
-//simple API example
-app.get('/', (req, res) => {
-    
-    // return res.json({
-    //     'API': 'this is api',
-    //     'data1': 'some data',
-    //     'data2':'some data'
-    // })
+app.use(bp.json())
+app.use(bp.urlencoded({extended:true}))
 
-    const ether_connection = require('./ehtereum-core/ether_connection');
-    return res.json(ether_connection(0))
+
+
+
+app.get('/', (req, res) => {    
+    res.json({ message: "Hello NFT World" })
 });
-  
+
+
+//get account Info
+app.get('/walletInfo', walletController.getWalletInfo)
+
+
+
+
+//send transaction
+app.post('/sendTransaction', TransactionController.sendTransaction)
+
+
+//create new random wallet
+app.get('/createWallet', walletController.createNewWallet)
+
+
+
+
+
 // Server setup
 app.listen(8080, () => {
     console.log('server listening on port 8080');
+    
 });
